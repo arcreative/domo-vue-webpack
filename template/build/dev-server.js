@@ -41,6 +41,60 @@ compiler.plugin('compilation', function (compilation) {
   })
 })
 
+
+/////////////////
+// START DOMO
+/////////////////
+  const bodyParser = require('body-parser');
+  const domoHelpers = require('./domo/helpers');
+  const request = require('request');
+
+// Verify active Domo session
+  domoHelpers.checkSession()
+    .then(function() {
+      console.log('Domo session is active.');
+    }, function() {
+      console.error('Domo session isn\'t active, please use `domo login` to restart your session');
+      process.exit(1);
+    })
+
+  app.use(bodyParser.urlencoded({
+    extended: false
+  }));
+  app.use(bodyParser.json());
+  app.all('/data/v1/:query', function(req, res) {
+    console.log('Proxying request', req.path, 'to Domo server.');
+    domoHelpers.domainPromise
+      .then(function(context) {
+        const url = domoHelpers.info.baseUrl + req.url;
+        const j = request.jar();
+
+        const referer = (req.headers.referer || '').indexOf('?') >= 0 ? `${req.headers.referer}&context=${context.id}` : `${req.headers.referer}?userId=27&customer=dev&locale=en-US&platform=desktop&context=${context.id}`; // jshint ignore:line
+        const headers = Object.assign({
+          referer,
+          accept: req.headers.accept,
+          'content-type': req.headers['content-type'] || req.headers['Content-Type']
+        }, domoHelpers.domoInstance.getAuthHeader());
+
+        const r = request({
+          url,
+          method: req.method,
+          headers,
+          jar: j,
+          body: JSON.stringify(req.body)
+        });
+
+        r.pipe(res);
+      })
+      .catch(function(err) {
+        console.warn(err);
+      });
+  });
+/////////////////
+// END DOMO
+/////////////////
+
+
 // proxy api requests
 Object.keys(proxyTable).forEach(function (context) {
   var options = proxyTable[context]

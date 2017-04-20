@@ -24,6 +24,14 @@ module.exports = {
       "type": "string",
       "message": "Author"
     },
+    "datasetAlias": {
+      "type": "string",
+      "message": "Alias for Domo dataset"
+    },
+    "datasetId": {
+      "type": "string",
+      "message": "ID of Domo dataset"
+    },
     "build": {
       "type": "list",
       "message": "Vue build",

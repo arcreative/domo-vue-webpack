@@ -7,11 +7,13 @@
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
-    "build": "node build/build.js"{{#unit}},
+    "build": "node build/build.js && cp domo/manifest.json dist/ && cp domo/thumbnail.png dist/"{{#unit}},
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run"{{/unit}}{{#e2e}},
     "e2e": "node test/e2e/runner.js"{{/e2e}}{{#if_or unit e2e}},
     "test": "{{#unit}}npm run unit{{/unit}}{{#unit}}{{#e2e}} && {{/e2e}}{{/unit}}{{#e2e}}npm run e2e{{/e2e}}"{{/if_or}}{{#lint}},
-    "lint": "eslint --ext .js,.vue src{{#unit}} test/unit/specs{{/unit}}{{#e2e}} test/e2e/specs{{/e2e}}"{{/lint}}
+    "lint": "eslint --ext .js,.vue src{{#unit}} test/unit/specs{{/unit}}{{#e2e}} test/e2e/specs{{/e2e}}"{{/lint}},
+    "publish": "npm run build && cd dist/ && domo publish && cp manifest.json ../domo/ && cd ..",
+    "upload": "npm run publish"
   },
   "dependencies": {
     "vue": "^2.2.6"{{#router}},
@@ -95,7 +97,12 @@
     "webpack": "^2.3.3",
     "webpack-dev-middleware": "^1.10.0",
     "webpack-hot-middleware": "^2.18.0",
-    "webpack-merge": "^4.1.0"
+    "webpack-merge": "^4.1.0",
+
+    "body-parser": "^1.17.1",
+    "ryuu-client": "^2.10.0",
+    "request": "2.79.0",
+    "glob": "7.1.1"
   },
   "engines": {
     "node": ">= 4.0.0",

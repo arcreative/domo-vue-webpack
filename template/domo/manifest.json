@@ -1,0 +1,15 @@
+{
+  "name": "{{ name }}",
+  "mapping": [
+    {
+      "alias": "{{ datasetAlias }}",
+      "dataSetId": "{{ datasetId }}",
+      "fields": []
+    }
+  ],
+  "version": "0.0.1",
+  "size": {
+    "width": 5,
+    "height": 3
+  }
+}
