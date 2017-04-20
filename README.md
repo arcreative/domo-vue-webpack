@@ -1,4 +1,7 @@
-# vue-webpack-boilerplate
+# domo-vue-webpack
+
+Domo-flavored version of [vuejs-templates/webpack](https://github.com/vuejs-templates/webpack).  Has support for
+proxying requests to Domo server, as well as support for publishing.
 
 > A full-featured Webpack setup with hot-reload, lint-on-save, unit testing & css extraction.
 
@@ -9,6 +12,11 @@
 - [For this template](http://vuejs-templates.github.io/webpack): common questions specific to this template are answered and each part is described in greater detail
 - [For Vue 2.0](http://vuejs.org/guide/): general information about how to work with Vue, not specific to this template
 
+## Prerequisites
+
+- Vue-CLI (install with `npm install -g vue-cli`)
+- Domo CLI (install with `npm install -g ryuu`)
+
 ## Usage
 
 This is a project template for [vue-cli](https://github.com/vuejs/vue-cli). **It is recommended to use npm 3+ for a more efficient dependency tree.**
@@ -18,6 +26,8 @@ $ npm install -g vue-cli
 $ vue init webpack my-project
 $ cd my-project
 $ npm install
+$ domo login $    # Required if a session is not currently active
+$ npm run publish # Required at least once to pull data in development
 $ npm run dev
 ```
 
@@ -50,10 +60,5 @@ If port 8080 is already in use on your machine you must change the port number i
     - Selenium and chromedriver dependencies automatically handled.
     - Automatically spawns the Selenium server.
 
-### Fork It And Make Your Own
-
-You can fork this repo to create your own boilerplate, and use it with `vue-cli`:
-
-``` bash
-vue init username/repo my-project
-```
+- `npm run publish`: Build and publish app to Domo.
+  - Use `npm run build --report`to build with bundle size analytics.
